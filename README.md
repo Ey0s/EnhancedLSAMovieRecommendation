@@ -336,9 +336,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - ✅ Comprehensive evaluation framework
 - ✅ Performance optimization and caching
 - ✅ Complete documentation and reports
-
----
-
-**Built with ❤️ for movie lovers and data science enthusiasts**
-
-*Discover your next favorite movie with the power of Enhanced Latent Semantic Analysis!* 🎬✨
