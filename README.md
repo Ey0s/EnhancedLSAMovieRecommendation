@@ -2,7 +2,7 @@
 
 A sophisticated content-based movie recommendation system using Enhanced Latent Semantic Analysis (LSA) with weighted feature engineering and hybrid similarity computation.
 
-## 🎬 Project Overview
+##  Project Overview
 
 This project implements an advanced movie recommendation system that leverages Natural Language Processing and dimensionality reduction techniques to provide intelligent, personalized movie recommendations. The system addresses common challenges in recommendation systems through innovative feature engineering and semantic understanding.
 
@@ -15,7 +15,7 @@ This project implements an advanced movie recommendation system that leverages N
 - **Interactive Web App**: Professional Streamlit interface with movie posters
 - **Quality Filtering**: Intelligent recommendation filtering based on ratings
 
-## 📊 Performance Metrics
+##  Performance Metrics
 
 - **Genre Consistency**: 93.16% accuracy in genre matching
 - **Rating Quality**: 7.1/10 average rating for recommendations
@@ -23,7 +23,7 @@ This project implements an advanced movie recommendation system that leverages N
 - **Dataset Coverage**: 4,802 movies spanning 1916-2017
 - **Feature Dimensions**: 8,000 TF-IDF features reduced to 150 LSA components
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
