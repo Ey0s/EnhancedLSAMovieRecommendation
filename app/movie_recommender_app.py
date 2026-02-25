@@ -118,9 +118,6 @@ class EnhancedMovieRecommender:
     
     def convert_standardized_rating(self, standardized_rating):
         """Convert standardized rating back to original 0-10 scale"""
-        # Based on typical movie rating distribution, approximate conversion
-        # Standardized ratings are z-scores, so we need to reverse the standardization
-        # Using approximate values: mean ≈ 6.2, std ≈ 1.2 for movie ratings
         original_rating = (standardized_rating * 1.2) + 6.2
         return max(0, min(10, original_rating))  # Clamp to 0-10 range
     
@@ -341,7 +338,7 @@ def display_movie_card(movie_info, rank=None):
                 st.caption("Similarity")
             
             if movie_info.get("rating") not in [None, "N/A", 0]:
-                st.metric("⭐ Rating", f"{movie_info['rating']}/10")
+                st.metric(" Rating", f"{movie_info['rating']}/10")
             
             if movie_info.get("vote_count") not in [None, "N/A", 0]:
                 votes = movie_info['vote_count']
@@ -349,7 +346,7 @@ def display_movie_card(movie_info, rank=None):
                     votes_str = f"{votes/1000:.1f}K"
                 else:
                     votes_str = str(votes)
-                st.metric("🗳️ Votes", votes_str)
+                st.metric(" Votes", votes_str)
             
             # Additional metrics for detailed view
             if 'budget' in movie_info and movie_info['budget'] > 0:
@@ -362,7 +359,7 @@ def display_movie_card(movie_info, rank=None):
                     budget_str = f"${budget/1000:.1f}K"
                 else:
                     budget_str = f"${budget:,.0f}"
-                st.metric("💰 Budget", budget_str)
+                st.metric(" Budget", budget_str)
             
             # Add revenue if available
             if 'revenue' in movie_info and movie_info['revenue'] > 0:
@@ -375,7 +372,7 @@ def display_movie_card(movie_info, rank=None):
                     revenue_str = f"${revenue/1000:.1f}K"
                 else:
                     revenue_str = f"${revenue:,.0f}"
-                st.metric("💵 Revenue", revenue_str)
+                st.metric(" Revenue", revenue_str)
             
             # Add runtime if available
             if 'runtime' in movie_info and movie_info['runtime'] > 0:
@@ -450,7 +447,7 @@ def create_rating_distribution(recommendations):
 # =========================
 def create_data_explorer_tab(recommender):
     """Create the data explorer tab with various visualizations and statistics"""
-    st.header("📊 Movie Dataset Explorer")
+    st.header(" Movie Dataset Explorer")
     
     # Convert standardized data for display
     df_display = recommender.df.copy()
@@ -476,26 +473,26 @@ def create_data_explorer_tab(recommender):
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.metric("📽️ Total Movies", len(df_display))
+        st.metric(" Total Movies", len(df_display))
     
     with col2:
         avg_rating = df_display['rating_original'].mean()
-        st.metric("⭐ Average Rating", f"{avg_rating:.1f}/10")
+        st.metric(" Average Rating", f"{avg_rating:.1f}/10")
     
     with col3:
         year_range = f"{df_display['release_year'].min():.0f} - {df_display['release_year'].max():.0f}"
-        st.metric("📅 Year Range", year_range)
+        st.metric(" Year Range", year_range)
     
     with col4:
         total_genres = len(set([g for sublist in df_display['genres_list'].apply(
             lambda x: eval(x) if isinstance(x, str) else []
         ) for g in sublist]))
-        st.metric("🎭 Unique Genres", total_genres)
+        st.metric(" Unique Genres", total_genres)
     
     st.markdown("---")
     
     # Interactive Filters
-    st.subheader("🔍 Interactive Filters")
+    st.subheader("Interactive Filters")
     
     filter_col1, filter_col2, filter_col3 = st.columns(3)
     
@@ -531,10 +528,10 @@ def create_data_explorer_tab(recommender):
         (df_display['vote_count_original'] >= min_votes)
     ]
     
-    st.info(f"📊 Showing {len(filtered_df)} movies after filtering")
+    st.info(f" Showing {len(filtered_df)} movies after filtering")
     
     # Visualizations
-    st.subheader("📈 Data Visualizations")
+    st.subheader(" Data Visualizations")
     
     viz_col1, viz_col2 = st.columns(2)
     
@@ -566,7 +563,7 @@ def create_data_explorer_tab(recommender):
         st.plotly_chart(fig_year, use_container_width=True)
     
     # Genre analysis
-    st.subheader("🎭 Genre Analysis")
+    st.subheader("Genre Analysis")
     
     # Extract all genres
     all_genres = []
@@ -591,7 +588,7 @@ def create_data_explorer_tab(recommender):
     st.plotly_chart(fig_genres, use_container_width=True)
     
     # Budget vs Revenue analysis
-    st.subheader("💰 Budget vs Revenue Analysis")
+    st.subheader(" Budget vs Revenue Analysis")
     
     # Filter out zero values for better visualization
     budget_revenue_df = filtered_df[
@@ -621,7 +618,7 @@ def create_data_explorer_tab(recommender):
         st.info("No movies with both budget and revenue data in the filtered selection.")
     
     # Top movies table
-    st.subheader("🏆 Top Movies (Filtered)")
+    st.subheader(" Top Movies (Filtered)")
     
     display_columns = [
         'original_title', 'release_year', 'rating_original', 
@@ -655,12 +652,12 @@ def main():
 
     recommender = load_enhanced_recommender()
     if recommender is None:
-        st.error("❌ Enhanced models not found. Please run the enhanced modeling notebook first.")
+        st.error("Enhanced models not found. Please run the enhanced modeling notebook first.")
         st.info("Run: `notebooks/03_modeling_enhanced.ipynb`")
         st.stop()
 
     # Enhanced Sidebar
-    st.sidebar.header("🚀 Enhanced LSA Model Info")
+    st.sidebar.header(" Enhanced LSA Model Info")
     st.sidebar.metric("Total Movies", len(recommender.df))
     st.sidebar.metric("TF-IDF Features", recommender.tfidf_model.max_features)
     st.sidebar.metric("LSA Dimensions", recommender.lsa_model.n_components)
@@ -672,14 +669,14 @@ def main():
         st.sidebar.metric("Explained Variance", f"{total_variance:.1%}")
     
     st.sidebar.markdown("""
-    **🔬 Enhanced LSA Pipeline**
+    ** Enhanced LSA Pipeline**
     1. **Weighted Features**: Genres 4x, Keywords 3x, Directors 3x
     2. **Advanced TF-IDF**: N-grams + optimized parameters
     3. **Enhanced LSA**: 150 components for better semantics
     4. **Hybrid Similarity**: LSA (80%) + Numerical (20%)
     5. **Quality Filtering**: Intelligent recommendations
     
-    **✨ Enhanced Benefits**
+    ** Enhanced Benefits**
     - Superior semantic understanding
     - Weighted feature importance
     - Hybrid content + metadata
@@ -691,7 +688,7 @@ def main():
     col1, col2 = st.columns([2, 1])
 
     with col1:
-        st.subheader("🔍 Search Movie")
+        st.subheader(" Search Movie")
 
         typed_text = st.text_input(
             "Start typing a movie name",
@@ -707,7 +704,7 @@ def main():
                 st.info("No matching movies found")
 
     with col2:
-        st.subheader("⚙️ Recommendation Settings")
+        st.subheader(" Recommendation Settings")
         num_recommendations = st.slider("Number of recommendations", 1, 20, 10)
         min_rating = st.slider("Minimum rating", 0.0, 10.0, 6.0, 0.5)
         show_charts = st.checkbox("Show visualization charts", True)
@@ -715,7 +712,7 @@ def main():
 
     # Recommendation Logic
     if selected_movie:
-        with st.spinner("🔍 Finding similar movies using Enhanced LSA..."):
+        with st.spinner(" Finding similar movies using Enhanced LSA..."):
             recommendations = recommender.get_recommendations(
                 selected_movie,
                 n_recommendations=num_recommendations,
@@ -726,17 +723,17 @@ def main():
             st.error(recommendations['error'])
             return
 
-        st.success(f"✅ Found {len(recommendations['recommendations'])} recommendations for **{selected_movie}**")
+        st.success(f" Found {len(recommendations['recommendations'])} recommendations for **{selected_movie}**")
 
         # Query movie info
         query_info = recommender.get_movie_info(selected_movie)
         if 'error' not in query_info:
-            with st.expander("🎥 About the selected movie", expanded=True):
+            with st.expander(" About the selected movie", expanded=True):
                 display_movie_card(query_info)
 
         # Charts
         if show_charts and recommendations['recommendations']:
-            st.header("📊 Recommendation Analytics")
+            st.header(" Recommendation Analytics")
             
             chart_col1, chart_col2 = st.columns(2)
             
@@ -753,7 +750,7 @@ def main():
                 )
 
         # Recommendations
-        st.header("🎯 Enhanced LSA Recommendations")
+        st.header(" Enhanced LSA Recommendations")
         
         if not recommendations['recommendations']:
             st.warning(f"No movies found with rating >= {min_rating}. Try lowering the minimum rating.")
@@ -776,7 +773,7 @@ def main():
     st.markdown("---")
     st.markdown(
         "<div style='text-align:center;color:#777'>"
-        "🚀 Enhanced LSA Movie Recommendation System | "
+        "Enhanced LSA Movie Recommendation System | "
         "Streamlit · Scikit-learn · Enhanced TruncatedSVD · Hybrid Features · TMDB API"
         "</div>",
         unsafe_allow_html=True
