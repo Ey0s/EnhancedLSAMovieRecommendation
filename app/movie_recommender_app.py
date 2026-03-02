@@ -14,13 +14,12 @@ import sys
 import os
 import requests
 import joblib
+import dotenv
 import pickle
 from sklearn.metrics.pairwise import cosine_similarity
 
-# =========================
-# TMDB CONFIGURATION
-# =========================
-TMDB_API_KEY = "f5a9653ca297a51265b464d01e1484ea"
+dotenv.load_dotenv()
+TMDB_API_KEY = os.getenv("TMDB")
 TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 TMDB_SEARCH_URL = "https://api.themoviedb.org/3/search/movie"
 
