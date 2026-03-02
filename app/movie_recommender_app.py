@@ -23,9 +23,7 @@ TMDB_API_KEY = os.getenv("TMDB")
 TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 TMDB_SEARCH_URL = "https://api.themoviedb.org/3/search/movie"
 
-# =========================
-# PAGE CONFIG
-# =========================
+
 st.set_page_config(
     page_title="🎬 LSA Movie Recommender",
     page_icon="🎬",
@@ -33,9 +31,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# =========================
-# CUSTOM CSS
-# =========================
+
 st.markdown("""
 <style>
 .main-header {
@@ -75,9 +71,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# =========================
 # ENHANCED RECOMMENDER CLASS
-# =========================
 class EnhancedMovieRecommender:
     def __init__(self):
         self.df = None
@@ -90,7 +84,6 @@ class EnhancedMovieRecommender:
     def load_models(self):
         """Load all enhanced models and data"""
         try:
-            # Determine the correct path based on current working directory
             if os.path.exists('data/processed/movies_enhanced_df.csv'):
                 data_path = 'data/processed/movies_enhanced_df.csv'
                 models_path = 'models'
@@ -98,16 +91,13 @@ class EnhancedMovieRecommender:
                 data_path = '../data/processed/movies_enhanced_df.csv'
                 models_path = '../models'
             
-            # Load dataframe
             self.df = pd.read_csv(data_path)
             
-            # Load models
             self.tfidf_model = joblib.load(f'{models_path}/tfidf_enhanced.pkl')
             self.lsa_model = joblib.load(f'{models_path}/lsa_enhanced.pkl')
             self.hybrid_features = joblib.load(f'{models_path}/hybrid_features_enhanced.pkl')
             self.similarity_matrix = joblib.load(f'{models_path}/similarity_enhanced.pkl')
             
-            # Create movie index mapping
             self.movie_to_idx = {title: idx for idx, title in enumerate(self.df['original_title'])}
             
             return True
@@ -122,30 +112,23 @@ class EnhancedMovieRecommender:
     
     def convert_standardized_rating_filter(self, original_rating_filter):
         """Convert original rating filter to standardized scale for filtering"""
-        # Convert user's 0-10 rating to standardized scale for filtering
         return (original_rating_filter - 6.2) / 1.2
     
     def convert_standardized_numeric(self, standardized_value, feature_type):
         """Convert standardized numeric values back to original scale"""
-        # Approximate conversion based on typical movie data distributions
         if feature_type == 'vote_count':
-            # vote_count: log-transformed then standardized
-            # Reverse: (z * std) + mean, then exp - 1
             log_value = (standardized_value * 2.5) + 6.5  # Approximate log scale
             return max(0, int(np.exp(log_value) - 1))
         
         elif feature_type == 'budget':
-            # budget: log-transformed then standardized
             log_value = (standardized_value * 1.8) + 17.5  # Approximate log scale
             return max(0, int(np.exp(log_value) - 1))
         
         elif feature_type == 'revenue':
-            # revenue: log-transformed then standardized
             log_value = (standardized_value * 2.0) + 18.0  # Approximate log scale
             return max(0, int(np.exp(log_value) - 1))
         
         elif feature_type == 'runtime':
-            # runtime: log-transformed then standardized
             log_value = (standardized_value * 0.3) + 4.7  # Approximate log scale
             return max(0, int(np.exp(log_value) - 1))
         
@@ -160,36 +143,30 @@ class EnhancedMovieRecommender:
         sim_scores = list(enumerate(self.similarity_matrix[movie_idx]))
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
         
-        # Convert min_rating to standardized scale for filtering
         min_rating_standardized = self.convert_standardized_rating_filter(min_rating)
         
         recommendations = []
         for idx, score in sim_scores[1:]:  # Skip the movie itself
             movie_data = self.df.iloc[idx]
             
-            # Apply rating filter using standardized values
             if movie_data['vote_average'] < min_rating_standardized:
                 continue
             
-            # Parse genres safely
             try:
                 genres = eval(movie_data['genres_list']) if isinstance(movie_data['genres_list'], str) else []
             except:
                 genres = []
             
-            # Parse directors safely
             try:
                 directors = eval(movie_data['director_list']) if isinstance(movie_data['director_list'], str) else []
             except:
                 directors = []
             
-            # Parse cast safely
             try:
                 cast = eval(movie_data['cast_list']) if isinstance(movie_data['cast_list'], str) else []
             except:
                 cast = []
             
-            # Convert standardized values back to original scale for display
             original_rating = self.convert_standardized_rating(movie_data['vote_average'])
             original_vote_count = self.convert_standardized_numeric(movie_data['vote_count'], 'vote_count')
             
@@ -218,7 +195,6 @@ class EnhancedMovieRecommender:
         movie_idx = self.movie_to_idx[movie_title]
         movie = self.df.iloc[movie_idx]
         
-        # Parse lists safely
         try:
             genres = eval(movie['genres_list']) if isinstance(movie['genres_list'], str) else []
             directors = eval(movie['director_list']) if isinstance(movie['director_list'], str) else []
@@ -226,7 +202,6 @@ class EnhancedMovieRecommender:
         except:
             genres = directors = cast = []
         
-        # Convert standardized values back to original scale
         original_rating = self.convert_standardized_rating(movie['vote_average'])
         original_vote_count = self.convert_standardized_numeric(movie['vote_count'], 'vote_count')
         original_budget = self.convert_standardized_numeric(movie['budget'], 'budget')
@@ -247,9 +222,7 @@ class EnhancedMovieRecommender:
             'runtime': original_runtime
         }
 
-# =========================
 # LOAD ENHANCED MODEL
-# =========================
 @st.cache_resource(show_spinner=False)
 def load_enhanced_recommender():
     """Load the enhanced movie recommender"""
@@ -257,9 +230,7 @@ def load_enhanced_recommender():
     if recommender.load_models():
         return recommender
     return None
-# =========================
 # AUTOCOMPLETE FUNCTION
-# =========================
 def get_movie_autocomplete(recommender, query, limit=10):
     if not query or len(query) < 2:
         return []
@@ -270,9 +241,7 @@ def get_movie_autocomplete(recommender, query, limit=10):
     matches = [t for t in titles if t.lower().startswith(query)]
     return sorted(matches)[:limit]
 
-# =========================
 # TMDB POSTER FETCH
-# =========================
 def fetch_movie_poster(movie_title):
     try:
         params = {"api_key": TMDB_API_KEY, "query": movie_title}
@@ -287,9 +256,7 @@ def fetch_movie_poster(movie_title):
         pass
     return None
 
-# =========================
 # ENHANCED MOVIE CARD
-# =========================
 def display_movie_card(movie_info, rank=None):
     """Display an enhanced movie card with better styling"""
     poster_url = fetch_movie_poster(movie_info['title'])
@@ -387,9 +354,7 @@ def display_movie_card(movie_info, rank=None):
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown("---")
 
-# =========================
 # ENHANCED VISUALIZATION
-# =========================
 def create_enhanced_similarity_chart(recommendations):
     """Create an enhanced similarity chart with better styling"""
     movies = [m['title'][:30] + '...' if len(m['title']) > 30 else m['title'] 
@@ -441,17 +406,13 @@ def create_rating_distribution(recommendations):
     fig.update_layout(height=300)
     return fig
 
-# =========================
 # DATA EXPLORER FUNCTIONS
-# =========================
 def create_data_explorer_tab(recommender):
     """Create the data explorer tab with various visualizations and statistics"""
     st.header(" Movie Dataset Explorer")
     
-    # Convert standardized data for display
     df_display = recommender.df.copy()
     
-    # Convert key metrics back to original scale
     df_display['rating_original'] = df_display['vote_average'].apply(
         lambda x: recommender.convert_standardized_rating(x)
     )
@@ -468,7 +429,6 @@ def create_data_explorer_tab(recommender):
         lambda x: recommender.convert_standardized_numeric(x, 'runtime')
     )
     
-    # Dataset Overview
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
@@ -490,7 +450,6 @@ def create_data_explorer_tab(recommender):
     
     st.markdown("---")
     
-    # Interactive Filters
     st.subheader("Interactive Filters")
     
     filter_col1, filter_col2, filter_col3 = st.columns(3)
@@ -641,9 +600,7 @@ def create_data_explorer_tab(recommender):
     
     st.dataframe(top_movies, use_container_width=True, hide_index=True)
 
-# =========================
 # MAIN APP WITH TABS
-# =========================
 def main():
     st.markdown('<h1 class="main-header">🎬 Enhanced LSA Movie Recommendation System</h1>', unsafe_allow_html=True)
     st.markdown("### Advanced Content-Based Filtering with Enhanced Latent Semantic Analysis")
