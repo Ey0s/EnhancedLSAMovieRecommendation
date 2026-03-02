@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-"""
-Launcher script for the Enhanced Movie Recommender App
-"""
-
 import subprocess
 import sys
 import os
@@ -15,7 +10,6 @@ def run_streamlit_app():
     print("\n" + "="*50)
     
     try:
-        # Run streamlit app
         subprocess.run([
             sys.executable, "-m", "streamlit", "run", 
             "app/movie_recommender_app.py",
