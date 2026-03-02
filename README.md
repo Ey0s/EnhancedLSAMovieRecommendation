@@ -39,18 +39,19 @@ pip install -r requirements.txt
 git clone <repository-url>
 cd enhanced-lsa-movie-recommender
 ```
+2. **Add TMDB API in .env file**
 
-2. **Install dependencies**
+3. **Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Run the application**
+4. **Run the application**
 ```bash
 streamlit run app/movie_recommender_app.py
 ```
 
-4. **Access the app**
+5. **Access the app**
 - Local: http://localhost:8501
 - Network: http://your-ip:8501
 
@@ -78,7 +79,8 @@ enhanced-lsa-movie-recommender/
 ├── 📄 reports/
 │   └── Enhanced_LSA_Movie_Recommendation_System_Report.docx
 ├── 📋 requirements.txt        # Python dependencies
-├── 🚫 .gitignore             # Git ignore rules
+├── 🚫 .gitignore           # Git ignore rules
+|── .env                    #environment variable
 └── 📖 README.md              # Project documentation
 ```
 
