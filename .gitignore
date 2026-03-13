@@ -434,7 +434,6 @@ Dockerfile.dev
 *.mov
 *.jpg
 *.jpeg
-*.png
 *.gif
 *.svg
 
