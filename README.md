@@ -59,32 +59,32 @@ streamlit run app/movie_recommender_app.py
 
 ```
 enhanced-lsa-movie-recommender/
-├── 📊 data/
+├── data/
 │   ├── raw/                    # Original dataset files
 │   └── processed/              # Cleaned and processed data
-├── 📓 notebooks/
+├── notebooks/
 │   ├── 01_eda.ipynb           # Exploratory Data Analysis
 │   ├── 02_preprocessing.ipynb  # Data cleaning and preprocessing
 │   ├── 03_modeling_enhanced.ipynb    # Enhanced LSA model development
 │   ├── 03_modeling_simple.ipynb     # Simple LSA baseline
 │   └── 04_evaluation_enhanced.ipynb # Model evaluation and testing
-├── 💻 app/
+├── app/
 │   ├── movie_recommender_app.py      # Main Streamlit application
 │   └── movie_recommender_simple.py  # Test application
-├── 🤖 models/
+├── models/
 │   ├── tfidf_enhanced.pkl     # Enhanced TF-IDF vectorizer
 │   ├── lsa_enhanced.pkl       # Enhanced LSA model
 │   ├── similarity_enhanced.pkl # Precomputed similarity matrix
 │   └── hybrid_features_enhanced.pkl # Hybrid feature matrix
-├── 📄 reports/
+├── reports/
 │   └── Enhanced_LSA_Movie_Recommendation_System_Report.docx
-├── 📋 requirements.txt        # Python dependencies
-├── 🚫 .gitignore           # Git ignore rules
+├──  requirements.txt        # Python dependencies
+├──  .gitignore           # Git ignore rules
 |── .env                    #environment variable
-└── 📖 README.md              # Project documentation
+└──  README.md              # Project documentation
 ```
 
-## 🔬 Methodology
+##  Methodology
 
 ### 1. Data Processing Pipeline
 
@@ -122,7 +122,7 @@ TruncatedSVD(
 hybrid_features = 0.8 * lsa_features + 0.2 * numerical_features
 ```
 
-## 📈 Results
+##  Results
 
 ### Genre Consistency Analysis
 - **Perfect Consistency (100%)**: 12/19 test movies
@@ -175,7 +175,7 @@ print(f"Genres: {movie_info['genres']}")
 print(f"Director: {movie_info['director']}")
 ```
 
-## 📊 Dataset Information
+##  Dataset Information
 
 ### Source
 - **Primary**: The Movie Database (TMDb)
@@ -194,7 +194,7 @@ print(f"Director: {movie_info['director']}")
 - **Coverage**: 20 unique genres, global movie representation
 - **Rating Distribution**: Mean 6.2/10, std 1.2 (realistic spread)
 
-## 🔧 Technical Details
+##  Technical Details
 
 ### Dependencies
 
@@ -220,7 +220,7 @@ joblib>=1.0.0
 - **Memory Management**: Efficient sparse matrix handling
 - **Parallel Processing**: Multi-threaded similarity computation
 
-## 🎯 Evaluation Metrics
+##  Evaluation Metrics
 
 ### Quantitative Metrics
 - **Genre Consistency**: Percentage of recommendations sharing genres
@@ -235,7 +235,7 @@ joblib>=1.0.0
 - **Serendipity**: Discovery of unexpected but relevant movies
 - **User Experience**: Interface usability and satisfaction
 
-## 🚧 Known Limitations
+##  Known Limitations
 
 ### Technical Limitations
 - **Cold Start**: New movies with limited metadata
@@ -249,7 +249,7 @@ joblib>=1.0.0
 - **Diversity Metrics**: Monitor recommendation variety
 - **Continuous Evaluation**: Regular performance assessment
 
-## 🔮 Future Enhancements
+##  Future Enhancements
 
 ### Short-term (3-6 months)
 - [ ] User feedback integration
@@ -269,7 +269,7 @@ joblib>=1.0.0
 - [ ] Predictive analytics for content success
 - [ ] Recommendation-as-a-Service API
 
-## 🤝 Contributing
+##  Contributing
 
 We welcome contributions! Please see our contributing guidelines:
 
@@ -301,18 +301,18 @@ flake8 app/ notebooks/
 black app/ notebooks/
 ```
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - **The Movie Database (TMDb)** for providing comprehensive movie data
 - **Scikit-learn** community for excellent machine learning tools
 - **Streamlit** team for the intuitive web app framework
 - **Open source community** for inspiration and best practices
 
-## 📞 Contact & Support
+##  Contact & Support
 
 ### Project Maintainers
 - **Technical Questions**: Open a GitHub issue
@@ -325,16 +325,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Tutorials**: Check `/notebooks` for step-by-step examples
 - **Community**: Join our discussions in GitHub Discussions
 
-## 📊 Project Status
+##  Project Status
 
-- **Status**: ✅ Production Ready
+- **Status**: Production Ready
 - **Version**: 1.0.0
 - **Last Updated**: December 2024
 - **Maintenance**: Actively maintained
 
 ### Recent Updates
-- ✅ Fixed numeric display issues (ratings, budgets, vote counts)
-- ✅ Enhanced web application with professional UI
-- ✅ Comprehensive evaluation framework
-- ✅ Performance optimization and caching
-- ✅ Complete documentation and reports
+- Fixed numeric display issues (ratings, budgets, vote counts)
+- Enhanced web application with professional UI
+- Comprehensive evaluation framework
+- Performance optimization and caching
+- Complete documentation and reports
